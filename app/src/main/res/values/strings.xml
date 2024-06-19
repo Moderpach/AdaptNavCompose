@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">AdaptiveNavigationDemo</string>
+    <string name="title_activity_list_detail_demo">ListDetailDemoActivity</string>
+</resources>
