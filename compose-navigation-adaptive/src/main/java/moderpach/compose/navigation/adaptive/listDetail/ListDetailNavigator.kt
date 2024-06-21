@@ -42,7 +42,7 @@ class ListDetailNavigator(
     }
 
     override fun createDestination(): Destination {
-        return ListDestination(this, {}, {})
+        return ListDestination(this, {_, _ -> }, {_, _ -> })
     }
 
     override fun popBackStack(popUpTo: NavBackStackEntry, savedState: Boolean) {
@@ -70,7 +70,7 @@ class ListDetailNavigator(
     @NavDestination.ClassType(Composable::class)
     abstract class Destination(
         navigator: ListDetailNavigator,
-        val content: @Composable AnimatedContentScope.(@JvmSuppressWildcards NavBackStackEntry) -> Unit
+        val content: @Composable AnimatedContentScope.(@JvmSuppressWildcards NavBackStackEntry, Boolean) -> Unit
     ) : NavDestination(navigator) {
 
         var enterTransition: (@JvmSuppressWildcards
@@ -90,14 +90,14 @@ class ListDetailNavigator(
     @NavDestination.ClassType(Composable::class)
     class ListDestination(
         navigator: ListDetailNavigator,
-        content: @Composable() (AnimatedContentScope.(@JvmSuppressWildcards NavBackStackEntry) -> Unit),
-        val placeholder: @Composable() (AnimatedContentScope.(@JvmSuppressWildcards NavBackStackEntry) -> Unit)
+        content: @Composable() (AnimatedContentScope.(@JvmSuppressWildcards NavBackStackEntry, Boolean) -> Unit),
+        val placeholder: @Composable() (AnimatedContentScope.(@JvmSuppressWildcards NavBackStackEntry, Boolean) -> Unit)
     ) : Destination(navigator, content)
 
     @NavDestination.ClassType(Composable::class)
     class DetailDestination(
         navigator: ListDetailNavigator,
-        content: @Composable() (AnimatedContentScope.(@JvmSuppressWildcards NavBackStackEntry) -> Unit),
+        content: @Composable() (AnimatedContentScope.(@JvmSuppressWildcards NavBackStackEntry, Boolean) -> Unit),
     ) : Destination(navigator, content)
 
     companion object {

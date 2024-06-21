@@ -25,8 +25,8 @@ public fun NavGraphBuilder.list(
     popExitTransition: (@JvmSuppressWildcards
     AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? =
         exitTransition,
-    content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
-    placeholder: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit
+    content: @Composable AnimatedContentScope.(NavBackStackEntry, Boolean) -> Unit,
+    placeholder: @Composable AnimatedContentScope.(NavBackStackEntry, Boolean) -> Unit
 ) {
     addDestination(
         ListDetailNavigator.ListDestination(
@@ -63,7 +63,7 @@ public fun NavGraphBuilder.detail(
     popExitTransition: (@JvmSuppressWildcards
     AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? =
         exitTransition,
-    content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit
+    content: @Composable AnimatedContentScope.(NavBackStackEntry, Boolean) -> Unit
 ) {
     addDestination(
         ListDetailNavigator.DetailDestination(

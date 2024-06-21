@@ -223,7 +223,7 @@ public fun ListDetailNavHost(
                 ) {
                     it.ListLocalOwnersProvider(saveableStateHolder, true) {
                         (it.destination as ListDetailNavigator.Destination)
-                            .content(this, it)
+                            .content(this, it, showTowPane)
                     }
                 }
                 mainTransition.AnimatedContent(
@@ -244,12 +244,12 @@ public fun ListDetailNavHost(
                     if (currentEntry?.destination is ListDetailNavigator.ListDestination) {
                         currentEntry.PlaceholderLocalOwnersProvider(saveableStateHolder) {
                             (currentEntry.destination as ListDetailNavigator.ListDestination)
-                                .placeholder(this, currentEntry)
+                                .placeholder(this, currentEntry, showTowPane)
                         }
                     } else {
                         currentEntry?.LocalOwnersProvider(saveableStateHolder) {
                             (currentEntry.destination as ListDetailNavigator.DetailDestination)
-                                .content(this, currentEntry)
+                                .content(this, currentEntry, showTowPane)
                         }
                     }
                 }
@@ -274,12 +274,12 @@ public fun ListDetailNavHost(
                 if (currentEntry?.destination is ListDetailNavigator.ListDestination) {
                     currentEntry.ListLocalOwnersProvider(saveableStateHolder, false) {
                         (currentEntry.destination as ListDetailNavigator.ListDestination)
-                            .content(this, currentEntry)
+                            .content(this, currentEntry, showTowPane)
                     }
                 } else {
                     currentEntry?.LocalOwnersProvider(saveableStateHolder) {
                         (currentEntry.destination as ListDetailNavigator.DetailDestination)
-                            .content(this, currentEntry)
+                            .content(this, currentEntry, showTowPane)
                     }
                 }
             }
