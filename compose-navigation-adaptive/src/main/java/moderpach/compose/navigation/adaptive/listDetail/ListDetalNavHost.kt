@@ -12,6 +12,7 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
@@ -55,8 +56,7 @@ public fun ListDetailNavHost(
         enterTransition,
     popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) =
         exitTransition,
-    expectedListPaneWidth: Dp = 400.dp,
-    minPaneWidth: Dp = 300.dp,
+    config: ListDetailNavHostConfig = ListDetailNavHostConfig(),
     builder: NavGraphBuilder.() -> Unit
 ) {
     ListDetailNavHost(
@@ -70,8 +70,7 @@ public fun ListDetailNavHost(
         exitTransition,
         popEnterTransition,
         popExitTransition,
-        expectedListPaneWidth,
-        minPaneWidth
+        config
     )
 }
 
@@ -90,8 +89,7 @@ public fun ListDetailNavHost(
         enterTransition,
     popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) =
         exitTransition,
-    expectedListPaneWidth: Dp = 400.dp,
-    minPaneWidth: Dp = 300.dp
+    config: ListDetailNavHostConfig,
 ) {
 
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -150,7 +148,7 @@ public fun ListDetailNavHost(
     // Last list
     val listBackStackEntry = listBackStackEntries.lastOrNull()
 
-    val showTowPane: Boolean = shouldShowTwoPane(minPaneWidth)
+    val showTowPane: Boolean = shouldShowTwoPane(config)
 
     val zIndices = remember { mutableMapOf<String, Float>() }
 
@@ -207,12 +205,15 @@ public fun ListDetailNavHost(
         if (showTowPane) {
             Row(
                 modifier = modifier,
+                horizontalArrangement = Arrangement.spacedBy(config.paneGap)
             ) {
+                val shouldShowInSameWidth = LocalConfiguration.current.screenWidthDp.dp <=
+                        config.maxListPaneWidth * 2 + config.paneGap
                 val listModifier =
-                    if (LocalConfiguration.current.screenWidthDp.dp <= expectedListPaneWidth * 2) {
+                    if (shouldShowInSameWidth) {
                         Modifier.weight(1f)
                     } else {
-                        Modifier.width(expectedListPaneWidth)
+                        Modifier.width(config.maxListPaneWidth)
                     }
                 val listTransition = updateTransition(listBackStackEntry, label = "list_entry")
                 listTransition.AnimatedContent(
@@ -305,10 +306,10 @@ public fun ListDetailNavHost(
 
 @Composable
 fun shouldShowTwoPane(
-    minPaneWidth: Dp,
+    config: ListDetailNavHostConfig,
 ): Boolean {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-    return screenWidth >= minPaneWidth * 2
+    return screenWidth >= config.minListPaneWidth * 2 + config.paneGap
 }
 
 private fun NavDestination.createEnterTransition(
