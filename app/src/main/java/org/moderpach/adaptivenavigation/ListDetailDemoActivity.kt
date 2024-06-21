@@ -5,9 +5,18 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -23,12 +32,14 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import moderpach.compose.navigation.adaptive.listDetail.ListDetailNavHost
+import moderpach.compose.navigation.adaptive.listDetail.ListDetailNavHostConfig
 import moderpach.compose.navigation.adaptive.listDetail.detail
 import moderpach.compose.navigation.adaptive.listDetail.list
 import moderpach.compose.navigation.adaptive.listDetail.rememberListDetailNavController
@@ -69,31 +80,67 @@ fun ListDetailDemo() {
         popExitTransition = {
             materialSharedAxisXOut(false, slideOffset)
         },
-        expectedListPaneWidth = 400.dp
+        config = ListDetailNavHostConfig(
+            paneGap = 16.dp
+        ),
+        modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainerLowest),
     ) {
         repeat(3) { n ->
             list(
                 route = "list$n",
-                content = {
-                    ListPane(
-                        navController,
-                        "list$n"
-                    )
+                content = { _, showTowPane ->
+                    val modifier = if (showTowPane) Modifier
+                        .windowInsetsPadding(
+                            WindowInsets.systemBars.only(
+                                WindowInsetsSides.Vertical + WindowInsetsSides.Left
+                            )
+                        )
+                        .padding(start = 16.dp)
+                        .clip(MaterialTheme.shapes.large)
+                    else Modifier
+                    Box(modifier) {
+                        ListPane(
+                            navController,
+                            "list$n"
+                        )
+                    }
                 },
-                placeholder = {
-                    DetailPane(
-                        navController,
-                        "placeholder$n"
-                    )
+                placeholder = { _, showTowPane ->
+                    val modifier = if (showTowPane) Modifier
+                        .windowInsetsPadding(
+                            WindowInsets.systemBars.only(
+                                WindowInsetsSides.Vertical + WindowInsetsSides.Right
+                            )
+                        )
+                        .padding(end = 16.dp)
+                        .clip(MaterialTheme.shapes.large)
+                    else Modifier
+                    Box(modifier) {
+                        DetailPane(
+                            navController,
+                            "placeholder$n"
+                        )
+                    }
                 }
             )
         }
         repeat(3) { n ->
-            detail("detail$n") {
-                DetailPane(
-                    navController,
-                    "detail$n"
-                )
+            detail("detail$n") { _, showTowPane ->
+                val modifier = if (showTowPane) Modifier
+                    .windowInsetsPadding(
+                        WindowInsets.systemBars.only(
+                            WindowInsetsSides.Vertical + WindowInsetsSides.Right
+                        )
+                    )
+                    .padding(end = 16.dp)
+                    .clip(MaterialTheme.shapes.large)
+                else Modifier
+                Box(modifier) {
+                    DetailPane(
+                        navController,
+                        "detail$n"
+                    )
+                }
             }
         }
     }
@@ -107,10 +154,14 @@ private fun ListPane(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar({
-                Text(name)
-            })
-        }
+            TopAppBar(
+                title = {
+                    Text(name)
+                },
+                colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surfaceContainerLow)
+            )
+        },
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
     ) { innerPadding ->
         LazyColumn(
             Modifier.fillMaxSize(),
@@ -163,8 +214,8 @@ private fun DetailPane(
         topBar = {
             TopAppBar(
                 title = {
-                Text(name)
-            },
+                    Text(name)
+                },
                 navigationIcon = {
                     IconButton({
                         navController.popBackStack()
