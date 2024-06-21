@@ -7,21 +7,20 @@ val navController = rememberListDetailNavController()
 ListDetailNavHost(
     navController,
     startDestination = "list1",
-    expectedListPaneWidth = 400.dp,
 ) {
     list(
         route = "list1",
-        content = {
+        content = { entry: NavBackStackEntry, showTwoPane: Boolean ->
             // do something
         },
-        placeholder = {
+        placeholder = { entry: NavBackStackEntry, showTwoPane: Boolean ->
             // do something
         }
     )
-    detail("detail1") {
+    detail("detail1") { entry: NavBackStackEntry, showTwoPane: Boolean ->
         // do something
     }
-    detail("detail2") {
+    detail("detail2") { entry: NavBackStackEntry, showTwoPane: Boolean ->
         // do something
     }
 }
