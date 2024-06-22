@@ -11,6 +11,19 @@ import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.get
 
+/**
+ * Add the list [Composable] to the [NavGraphBuilder]
+ *
+ * @param route route for the destination
+ * @param arguments list of arguments to associate with destination
+ * @param deepLinks list of deep links to associate with the destinations
+ * @param enterTransition callback to determine the destination's enter transition
+ * @param exitTransition callback to determine the destination's exit transition
+ * @param popEnterTransition callback to determine the destination's popEnter transition
+ * @param popExitTransition callback to determine the destination's popExit transition
+ * @param content content composable for the destination
+ * @param placeholder placeholder composable for the destination
+ */
 public fun NavGraphBuilder.list(
     route: String,
     arguments: List<NamedNavArgument> = emptyList(),
@@ -49,6 +62,18 @@ public fun NavGraphBuilder.list(
     )
 }
 
+/**
+ * Add the detail [Composable] to the [NavGraphBuilder]
+ *
+ * @param route route for the destination
+ * @param arguments list of arguments to associate with destination
+ * @param deepLinks list of deep links to associate with the destinations
+ * @param enterTransition callback to determine the destination's enter transition
+ * @param exitTransition callback to determine the destination's exit transition
+ * @param popEnterTransition callback to determine the destination's popEnter transition
+ * @param popExitTransition callback to determine the destination's popExit transition
+ * @param content composable for the destination
+ */
 public fun NavGraphBuilder.detail(
     route: String,
     arguments: List<NamedNavArgument> = emptyList(),

@@ -27,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.NavBackStackEntry
@@ -41,6 +40,27 @@ import androidx.navigation.compose.LocalOwnersProvider
 import androidx.navigation.createGraph
 import androidx.navigation.get
 
+/**
+ * Provides in place in the Compose hierarchy for self contained navigation to occur.
+ *
+ * Once this is called, any Composable within the given [NavGraphBuilder] can be navigated to from
+ * the provided [navController].
+ *
+ * The builder passed into this method is [remember]ed. This means that for this NavHost, the
+ * contents of the builder cannot be changed.
+ *
+ * @param navController the navController for this host
+ * @param startDestination the route for the start destination
+ * @param modifier The modifier to be applied to the layout.
+ * @param contentAlignment The [Alignment] of the [AnimatedContent]
+ * @param route the route for the graph
+ * @param enterTransition callback to define enter transitions for destination in this host
+ * @param exitTransition callback to define exit transitions for destination in this host
+ * @param popEnterTransition callback to define popEnter transitions for destination in this host
+ * @param popExitTransition callback to define popExit transitions for destination in this host
+ * @param config configuration for layout behavior in this host
+ * @param builder the builder used to construct the graph
+ */
 @Composable
 public fun ListDetailNavHost(
     navController: NavHostController,
@@ -74,6 +94,22 @@ public fun ListDetailNavHost(
     )
 }
 
+/**
+ * Provides in place in the Compose hierarchy for self contained navigation to occur.
+ *
+ * Once this is called, any Composable within the given [NavGraphBuilder] can be navigated to from
+ * the provided [navController].
+ *
+ * @param navController the navController for this host
+ * @param graph the graph for this host
+ * @param modifier The modifier to be applied to the layout.
+ * @param contentAlignment The [Alignment] of the [AnimatedContent]
+ * @param enterTransition callback to define enter transitions for destination in this host
+ * @param exitTransition callback to define exit transitions for destination in this host
+ * @param popEnterTransition callback to define popEnter transitions for destination in this host
+ * @param popExitTransition callback to define popExit transitions for destination in this host
+ * @param config configuration for layout behavior in this host
+ */
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 public fun ListDetailNavHost(
