@@ -74,7 +74,7 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "own.moderpach"
             artifactId = "compose-navigation-adaptive"
-            version = "0.1"
+            version = "0.1.1"
 
             pom {
                 name = "compose-navigation-adaptive"
