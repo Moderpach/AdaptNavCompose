@@ -1,8 +1,9 @@
+import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    `maven-publish`
+    alias(libs.plugins.publisher)
 }
 
 android {
@@ -38,13 +39,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
-    publishing {
-        multipleVariants {
-            allVariants()
-            withSourcesJar()
-            withJavadocJar()
-        }
-    }
 }
 
 
@@ -52,7 +46,6 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
@@ -61,56 +54,45 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
 
 //Publish
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
+}
 
-publishing {
-    publications {
-        register<MavenPublication>("release") {
-            groupId = "own.moderpach"
-            artifactId = "compose-navigation-adaptive"
-            version = "0.1.1"
+mavenPublishing {
+    coordinates("io.github.moderpach", "compose-navigation-adaptive", "0.0.1")
 
-            pom {
-                name = "compose-navigation-adaptive"
-                description = """
-                    AdaptNavCompose provides a clean, extendable and elegant implementation of
-                    adaptive layout and navigation for Jetpack Compose.
-                """.trimIndent()
-                url = "https://github.com/Moderpach/AdaptNavCompose"
-                licenses {
-                    licenses {
-                        name = "Apache License 2.0"
-                        url = "https://github.com/Moderpach/AdaptNavCompose/blob/master/LICENSE"
-                    }
-                }
-                developers {
-                    developer {
-                        id = "moderpach"
-                        name = "Moderpach"
-                    }
-                }
-                scm {
-                    connection = "scm:git:git://github.com/Moderpach/AdaptNavCompose.git"
-                    developerConnection = "scm:git:ssh://github.com/Moderpach/AdaptNavCompose.git"
-                    url = "https://github.com/Moderpach/AdaptNavCompose"
-                }
-            }
-
-            afterEvaluate {
-                from(components["release"])
+    pom {
+        name.set("AdaptNavCompose")
+        description.set("""
+            AdaptNavCompose provides a clean, extendable and elegant implementation of adaptive layout and navigation for Jetpack Compose.
+        """.trimIndent())
+        inceptionYear.set("2024")
+        url.set("https://github.com/Moderpach/AdaptNavCompose")
+        licenses {
+            license {
+                name.set("Apache License 2.0")
+                url.set("https://github.com/Moderpach/AdaptNavCompose/blob/master/LICENSE")
+                distribution.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
             }
         }
-    }
-    repositories {
-        maven {
-            name = "compose-navigation-adaptive"
-            url = uri("${project.buildDir}/repo")
+        developers {
+            developer {
+                id.set("moderpach")
+                name.set("Moderpach")
+                url.set("https://github.com/Moderpach")
+            }
+        }
+        scm {
+            url.set("https://github.com/Moderpach/AdaptNavCompose")
+            connection.set("scm:git:https://github.com/Moderpach/AdaptNavCompose.git")
+            developerConnection.set("scm:git:ssh://git@github.com:Moderpach/AdaptNavCompose.git")
         }
     }
 }
