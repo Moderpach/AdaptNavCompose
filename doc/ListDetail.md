@@ -25,3 +25,7 @@ ListDetailNavHost(
     }
 }
 ```
+
+## Limitations
+
+Back stack entries' lifecycle is managed by `NavControl` in private. So, list pane lifecycle in two pane mode follows the lifecycle outside of the `NavHost`.
