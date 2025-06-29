@@ -1,5 +1,8 @@
 # AdaptNavCompose
 
+> [!CAUTION]
+> Deprecated because official Navigation3 released
+
 AdaptNavCompose provides a clean, extendable and elegant implementation of
 adaptive layout and navigation for Jetpack Compose.
 
